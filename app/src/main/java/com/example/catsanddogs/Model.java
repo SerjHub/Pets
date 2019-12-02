@@ -2,6 +2,8 @@ package com.example.catsanddogs;
 
 import android.content.Context;
 
+import androidx.lifecycle.ViewModel;
+
 import java.util.Random;
 
 public class Model {
@@ -9,17 +11,14 @@ public class Model {
     static String CAT = "cat";
     static String DOG = "dog";
     private String[] mPetList;
-    private Context mContext;
 
-    public Model(Context context){
-        mContext = context;
-    }
-
-    public MyAdapter populateAdapterData(){
-        return new MyAdapter(mContext, createPetList());
+    public Model(){
     }
 
     public String[] createPetList() {
+
+        if (mPetList != null) return mPetList;
+
         mPetList = new String[200];
         for(int i=0;i<mPetList.length;i++)
         {

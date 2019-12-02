@@ -19,9 +19,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private Model mActivityViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +26,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mActivityViewModel = new Model(this);
-        mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(getGridLayoutManager());
         mRecyclerView.setAdapter(getAdapter());
+
     }
+
 
     @VisibleForTesting
     MyAdapter getAdapter(){
-        return mActivityViewModel.populateAdapterData();
+        return new MyAdapter(this, PetsApp.getPetsContainer().getPets());
     }
 
     @VisibleForTesting

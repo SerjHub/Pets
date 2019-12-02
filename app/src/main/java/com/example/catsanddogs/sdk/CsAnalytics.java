@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.catsanddogs.BuildConfig;
 import com.example.catsanddogs.R;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class CsAnalytics {
     private final String logFilePath = "petLog.txt";
     private PetFileObserver observer;
     private boolean isFileChecked = false;
+    private boolean logEnabled;
 
 
     private EventListener debouncedEventListener = new EventListener() {
@@ -39,7 +41,7 @@ public class CsAnalytics {
             final int countOfPets = getCountInRange(pet, holder.getAdapterPosition());
             final String message = context.getString(R.string.position_clicked, (holder.getAdapterPosition() + 1), countOfPets, pet);
 
-            FileUtil.writeToFile(context, logFilePath, message);
+            if (logEnabled) FileUtil.writeToFile(context, logFilePath, message);
         }
     };
 
@@ -50,6 +52,7 @@ public class CsAnalytics {
         debounceClickHandler = new DebounceClickHandler(debouncedEventListener, TWO_SECONDS);
         pets = new ArrayList<>();
         setLogFile();
+        logEnabled = BuildConfig.FLAVOR == "dev";
     }
 
 
@@ -68,7 +71,6 @@ public class CsAnalytics {
                 message,
                 Toast.LENGTH_LONG
         ).show();
-
         debounceClickHandler.debounceTrigger(holder, position);
 
     }

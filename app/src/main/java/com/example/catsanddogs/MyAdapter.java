@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PetViewHolder> {
 
-    private Context mContext;
     private String[] mPetList;
     private CsAnalytics mCsAnalytics;
 
     public MyAdapter(@NonNull Context context, @NonNull String[] petList) {
-        mContext = context;
         mPetList = petList;
         mCsAnalytics = new CsAnalytics(context);
     }
@@ -26,7 +24,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PetViewHolder> {
     @NonNull
     @Override
     public PetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.custom_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout, parent, false);
         mCsAnalytics.clear();
         return new PetViewHolder(view);
     }
