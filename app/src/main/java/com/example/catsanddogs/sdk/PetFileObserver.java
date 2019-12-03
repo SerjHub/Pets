@@ -6,14 +6,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.File;
+import com.example.catsanddogs.sdk.interfaces.FileAccessListener;
 
 public class PetFileObserver extends FileObserver {
 
     private FileAccessListener listener;
 
     public PetFileObserver(@NonNull String file) {
-        super(file);
+        super(file);  //crash if constructor with File
     }
 
 
@@ -23,15 +23,10 @@ public class PetFileObserver extends FileObserver {
 
     @Override
     public void onEvent(int event, @Nullable String path) {
-        Log.i("LogPets observer", "event come ");
         switch (event) {
             case PetFileObserver.MODIFY:
                 listener.modified(path);
                 break;
         }
     }
-}
-
-interface FileAccessListener {
-    void modified(String path);
 }

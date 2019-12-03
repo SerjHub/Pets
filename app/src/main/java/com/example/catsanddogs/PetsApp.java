@@ -24,7 +24,4 @@ public class PetsApp extends Application {
         return container;
     }
 
-    public static PetsApp getApp() {
-        return app;
-    }
 }

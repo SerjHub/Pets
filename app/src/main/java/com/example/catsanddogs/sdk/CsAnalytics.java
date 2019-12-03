@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.catsanddogs.BuildConfig;
 import com.example.catsanddogs.R;
+import com.example.catsanddogs.sdk.interfaces.EventListener;
+import com.example.catsanddogs.sdk.interfaces.FileAccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class CsAnalytics {
         @Override
         public void onEventHandledAfterDelay(Object... args) {
 
+
             RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) args[0];
             int position = (int) args[1];
 
@@ -41,21 +44,21 @@ public class CsAnalytics {
             final int countOfPets = getCountInRange(pet, holder.getAdapterPosition());
             final String message = context.getString(R.string.position_clicked, (holder.getAdapterPosition() + 1), countOfPets, pet);
 
+            Log.i("ShowEvent", message);
+
             if (logEnabled) FileUtil.writeToFile(context, logFilePath, message);
+
         }
     };
 
 
     public CsAnalytics(@NonNull Context context) {
         this.context = context;
-        final long TWO_SECONDS = 2000;
-        debounceClickHandler = new DebounceClickHandler(debouncedEventListener, TWO_SECONDS);
+        debounceClickHandler = new DebounceClickHandler(debouncedEventListener);
         pets = new ArrayList<>();
         setLogFile();
         logEnabled = BuildConfig.FLAVOR == "dev";
     }
-
-
 
 
     public void trigger(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -90,7 +93,8 @@ public class CsAnalytics {
 
     public void clear() {
         if (!isFileChecked) {
-            //clear
+            isFileChecked = true;
+            FileUtil.checkFile(context, logFilePath);
         }
 
     }
@@ -120,7 +124,6 @@ public class CsAnalytics {
                     @Override
                     public void run() {
 
-                        Log.i("FindFile",  "data - " + dataFromFile);
                         Toast.makeText(
                                 context,
                                 dataFromFile,

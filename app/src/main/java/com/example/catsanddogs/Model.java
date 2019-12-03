@@ -1,9 +1,5 @@
 package com.example.catsanddogs;
 
-import android.content.Context;
-
-import androidx.lifecycle.ViewModel;
-
 import java.util.Random;
 
 public class Model {

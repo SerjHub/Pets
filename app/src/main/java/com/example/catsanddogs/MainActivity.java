@@ -1,21 +1,13 @@
 package com.example.catsanddogs;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Looper;
-import android.os.MessageQueue;
-import android.util.Log;
-import android.view.Menu;
-
-import java.sql.Time;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 

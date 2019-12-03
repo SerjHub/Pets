@@ -1,46 +1,34 @@
 package com.example.catsanddogs.sdk;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import android.os.Handler;
+
+import com.example.catsanddogs.sdk.interfaces.EventListener;
 
 class DebounceClickHandler {
     private EventListener eventListener;
 
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Object[] args;
+    private boolean isEventDebounce = false;
 
-    DebounceClickHandler(EventListener listener, long delayTime) {
-        delay = delayTime;
+    DebounceClickHandler(EventListener listener) {
         eventListener = listener;
     }
 
-    private long delay;
-    private long timeStamp;
-
     void debounceTrigger(final Object... args) {
+        this.args = args;
 
-      //  scheduler.
+        if (isEventDebounce) return;
+        isEventDebounce = true;
 
-        scheduler.schedule(new Runnable() {
+        long TWO_SECONDS = 2000;
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                eventListener.onEventHandledAfterDelay(args);
+                isEventDebounce = false;
+                eventListener.onEventHandledAfterDelay(DebounceClickHandler.this.args);
             }
-        }, 2, TimeUnit.SECONDS);
+        }, TWO_SECONDS);
     }
-
-    private Thread launchTimer(final Runnable r) {
-        return new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-
-            }
-        });
-    }
-
 }
 
-interface EventListener {
-    void onEventHandledAfterDelay(Object... args);
-}
+

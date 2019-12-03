@@ -5,11 +5,14 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class FileUtil {
 
@@ -25,6 +28,7 @@ public class FileUtil {
             bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
+
         }
         catch (IOException e) {
             Log.e("FileException", "File write failed: " + e.toString());
@@ -43,7 +47,6 @@ public class FileUtil {
 
             while(( s = buffer.readLine()) != null ) {
                 builder.append(s);
-                builder.append( '\n' );
             }
             reader.close();
             return builder.toString();
@@ -52,5 +55,21 @@ public class FileUtil {
             Log.e("FileException", "File read failed: " + e.toString());
         }
         return s;
+    }
+
+    public static void checkFile(Context context, String filePath) {
+        long someMaxSize = 1024L;   //1kb
+        File file = context.getFileStreamPath(filePath);
+        long totalSpace = file.length();
+        if (totalSpace > someMaxSize) {
+            try {
+                PrintWriter writer = new PrintWriter(file);
+                writer.print("");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
